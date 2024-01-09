@@ -36,3 +36,41 @@
     transform: rotate(360deg);
   }
 }
+
+input{
+  background-color: white;
+  border:0;
+  flex:1
+}
+input:focus-visible{
+  border:0;
+  outline:none
+}
+label{
+  transition: 0.5s;
+}
+.green {
+  border:1px solid  green;
+  color:green;
+}
+.red{
+  border:1px solid  red;
+  color:red;
+}
+.black{
+  border:1px solid  black;
+  color:black;
+}
+.gray{
+  border:1px solid  gray;
+}
+
+.gray label{
+  transform: translateX(130%);
+}
+
+.black label,
+.red label,
+.green label{
+  transform: translateX(0);
+}

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import "@fontsource/noto-sans-kr";
 import arrowbtnimg from './icon/go.svg';
+import { useEffect, useRef, useState } from 'react';
 
 // 타이틀
 export const TitleCommon = styled.h2`
@@ -12,16 +13,50 @@ export const TitleCommon = styled.h2`
 // 폼
 
 export const InputUi = (props) => {
+    const inputid = useRef(null);
+    const [status, updateSetting] = useState(0);
+    const styleArr = ["gray","black","green","red"];
+
+    useEffect(()=>{
+                   
+        const handleFocus = () => {
+            updateSetting(1);          
+            if (inputid.current) {
+                inputid.current.removeEventListener('focus', handleFocus);
+            }
+        };
+ 
+        if (inputid && inputid.current) {
+         
+            inputid.current.addEventListener('focus', handleFocus);
+        }
+      
+        return () => {
+            if (inputid && inputid.current) {
+                inputid.current.removeEventListener('focus', handleFocus);
+            }
+        };
+      
+    },[])
+
     return (
-        <div className={props.className && props.className}>
-            <div>
-                <input type="text" name={props.inputinfo.nm} placeholder={props.children} />
+        <div className={props.className && props.className }>
+            <div className={`${styleArr[status]} d-flex overflow-hidden p-3 bg-white inputwrap align-items-start`}>
+                <input type="text" name={props.inputinfo.nm} placeholder={props.children} ref={inputid} 
+
+                onChange={ (e) => { updateSetting(inputid.current.value ? 2 : 3)}}             
+                
+                onBlur={(e)=>{                
+                     console.log(inputid.current);                     
+                     updateSetting(inputid.current.value ? 2 : 3)
+                }}
+                 />
                 <label htmlFor="" >
                     {props.inputinfo.labeltext}
                     <i></i>
                 </label>
             </div>
-            <span>{props.inputinfo.alerttext}</span>
+          { status === 3 && <span>{props.inputinfo.alerttext}</span> }
         </div>
     )
 }
